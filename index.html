@@ -46,7 +46,386 @@ background:black;
 #entradas{
     position: relative;;
     right:0px;
+    bottom:0px;<!DOCTYPE html>
+<html>
+    <meta name="viewport" content="width=device-width, height=device-height" name="theme-color" content="#4285f4">
+    <link rel="shortcut icon" href="https://www.transparentpng.com/thumb/saturn/3d-saturn-free-png-IK0bAI.png"
+    type="image/x-icon" />
+
+
+<body>
+<style>
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%;
+}
+
+#todo{
+    height:100%;
+    width:100%;
+   
+}
+#img{
+	border-style:solid;
+width:400px;
+height:300px;
+display:none;
+
+}
+#canvas{
+    border-style:solid;
+  //  background:url(https://thumbs.dreamstime.com/b/sunset-beach-sunrays-133301221.jpg);
+    //background-size: 100% 102%;
+}
+#tx{
+    border-style:solid;
+    width:100%;
+height:400px;
+color:white;
+background:black;
+}
+#entradas{
+    position: relative;;
+    right:0px;
     bottom:0px;
+    width:100%;
+    height:80%;
+  //  background:rgba(200,240,255,.4);
+  background:white;
+    padding:5px;
+    border-style:solid;
+
+        
+}
+#texto{
+    width:98%;
+    height:30%;
+    background:rgba(230,255,200,.5);
+
+}
+#regla{
+    width:98%;
+    height:30%;
+  
+
+}
+</style>
+<div id="todo">
+	<img id="img"src-"https://media4.s-nbcnews.com/j/msnbc/Components/Photos/050405/050405_shuttle_vmed.fit-760w.jpg">
+	<canvas id="canvas" width=400 height=300></canvas>
+ 
+    
+    <div id="entradas">
+      <input type="file" oninput="openf(this)"></input>
+
+        <textarea id="regla"></textarea>
+  
+        bk<input type="text" oninput="rule.bk=this.value"/>
+        clv:<input type="text" value="40.8.3" oninput="setrule(this.value)"/>
+           <button onclick="init()">Show Data</button>
+           <button onclick="procesar()">Procesar</button>  
+        <button onclick="evalregla()">Procesar Regla Local</button>
+        <button onclick="localStorage.setItem('regla',regla.value)">Save regla local</button>
+        <button onclick="regla.value=localStorage.getItem('regla','No hay regla')">Load regla local</button>
+        
+            <button onclick="savepic()">Save</button>
+          
+        <button onclick="savepic()">Save</button>
+        <button onclick="dos()">dos</button>
+    
+
+      <textarea id="texto"></textarea>
+  
+      <p id="clv"></p>
+      </div>
+<textarea id="tx"></textarea>
+</div>
+<script>
+  W=400;
+  H=300;
+  canvas.width=W;canvas.height=H;
+  tx.style.display="none";
+  pic="https://thumbs.dreamstime.com/b/sun-rays-mountain-landscape-5721010.jpg"
+rule={offset:40,skeep:8,place:3,bk:"100% 100%"};
+var data,fdata;
+canvas.style.backgroundSize=rule.bk
+
+var ctx=canvas.getContext("2d",{willReadFrequently:true});
+ctx.fillStyle ="rgba(0,0,0,0)";
+ctx.fillRect(0,0,canvas.width,canvas.height)
+data=ctx.getImageData(0,0,W,H).data;
+tx.value=data;
+
+
+img.onload=function(callback){
+  canvas.width=this.naturalWidth;canvas.height=this.naturalHeight;
+  W=canvas.width;H=canvas.height
+alert(W+"\n\n"+H)
+  ctx=canvas.getContext("2d",{willReadFrequently:true});
+  ctx.fillStyle ="rgba(0,0,0,0)";
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+tx.value=data;
+ctx.drawImage(img,0,0,W,H)
+if(callback!= undefined) callback;
+//procesar()
+
+
+}
+  
+    function evalregla(){
+eval("try{"+regla.value+"} catch(e){alert(e)}")
+     }
+     function procesar(){
+    ctx.clearRect(0, 0, W, H);
+  ctx.drawImage(img,0,0,W,H)
+  canvas.style.backgroundSize=rule.bk
+  frame=ctx.getImageData(0,0,W,H);
+data=frame.data;//alert(data.length)
+
+var npix=data.length/4;
+alert(npix)
+var nlin=npix/W;
+alert(nlin)
+
+ 
+   var markers={nl:0,arln:[],rows:[]};
+  for (let i = 0; i < H; i++) {
+      var marker=true;
+      for (let ii = 0; ii <W ; ii++) {//npix
+        let r = frame.data[i*W+ii * 4 + 0];
+        let g = frame.data[i*W+ii * 4 + 1];
+        let b = frame.data[i*W+ii * 4 + 2];
+        let a = frame.data[i*W+ii * 4 + 3];
+
+if(r<200 && g<200 && b<200){
+marker=false;
+ii=W;
+}else frame.data[i*W+ii * 4 + 0]=200;
+
+      
+      }
+if(marker){
+  markers.ln++;
+  markers.arln.push(i)
+
+}
+    }
+    alert(JSON.stringify(markers));
+    texto.value=JSON.stringify(markers)
+  
+frame.data=data;
+
+ctx.putImageData(frame,0,0)
+}
+
+function procesar2(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img,0,0,400,300)
+  canvas.style.backgroundSize=rule.bk
+  fdata=ctx.getImageData(0,0,400,300);
+data=fdata.data;//alert(data.length)
+var n=texto.value;
+for(var i=0;i<n.length;i++){
+ 
+    data[rule.offset*1+i*rule.skeep*1+rule.place*1]=n.charCodeAt(i);
+}
+fdata.data=data;
+tx.value=data;
+ctx.putImageData(fdata,0,0)
+}
+
+function init(){
+    tx.value=data;
+    if(tx.style.display==="none") tx.style.display="block"
+    else tx.style.display="none"
+
+}
+
+function toDataURL(url, callback) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+
+function savepic() {
+  canvas.toBlob(function(blob) {
+             var name=prompt("File Name:",'ScreenShot-' + document.title + '-' + Date.now());
+             if(name==null) {alert("File not saved, missing name");return}
+             var url = URL.createObjectURL(blob);
+             var fileName = name //png';
+             var anchor = document.createElement('a');
+             anchor.href = url;
+             anchor.setAttribute("download", fileName);
+             anchor.className = "download-js-link";
+             anchor.innerHTML = "downloading...";
+             anchor.style.display = "none";
+             document.body.appendChild(anchor);
+             setTimeout(function() {
+                 anchor.click();
+                 document.body.removeChild(anchor);
+             }, 1);
+
+         }, 'image/png');
+
+     }
+
+
+     function openf(v) {
+      var t=2;
+            //  var t=prompt("1 a text or 2 as Image",1)
+            var fr=new FileReader();
+            fr.onload=function(){
+            if(t==null || t==1) texto.value=fr.result;
+            else {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+              img.src=fr.result;
+
+            }
+            }
+              
+            if(t==null || t==1) fr.readAsText(v.files[0]);
+           else fr.readAsDataURL(v.files[0]);
+
+        }
+      function dos(){
+  
+        var n="";
+for(var i=0;i<data.length;i++){
+  n+=String.fromCharCode(data[rule.offset*1+i*rule.skeep*1+rule.place*1]);//alert(data[rule.offset*1+i*rule.skeep*1+rule.place*1])
+}
+texto.value=n;
+
+}
+  
+function savepic2(){
+
+// This code will automatically save the current canvas as a .png file. 
+// Its useful as it can be placed in a loop to grab multiple canvas frames, I use it to create thumbnail gifs for my blog
+// Only seems to work with Chrome
+
+// Get the canvas
+//var canvas = document.getElementById("canvas");
+// Convert the canvas to data
+var image = canvas.toDataURL();
+// Create a link
+var aDownloadLink = document.createElement('a');
+// Add the name of the file to the link
+aDownloadLink.download = 'canvas_image.png';
+// Attach the data to the link
+aDownloadLink.href = image;
+// Get the code to click the download link
+aDownloadLink.click();
+ /**///
+   }
+   function setrule(r){
+       try{
+        
+           var a=r.split(".");
+         rule.offset=a[0]*1;rule.skeep=a[1]*1;rule.place=a[2]*1
+         clv.innerHTML=JSON.stringify(rule)
+       }
+       catch(e){}
+     }
+{
+  try{
+
+ canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+  W=canvas.width;H=canvas.height
+alert(W+"\n\n"+H)
+  ctx=canvas.getContext("2d",{willReadFrequently:true});
+  ctx.fillStyle ="rgba(0,0,0,0)";
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+tx.value=data;
+ctx.drawImage(img,0,0,W,H)
+
+
+
+
+
+
+ ctx.clearRect(0, 0, W, H);
+  ctx.drawImage(img,0,0,W,H)
+  canvas.style.backgroundSize=rule.bk
+  frame=ctx.getImageData(0,0,W,H);
+data=frame.data;//alert(data.length)
+
+var npix=data.length/4;
+//alert(npix)
+var nlin=npix/W;
+//alert(nlin)
+
+ 
+   var markers={nl:0,arln:[],rows:[],w:W,h:H};
+  for (let i = 0; i < H; i++) {
+      var marker=true;
+var p=i*W+ii * 4
+      for (let ii = 0; ii <W ; ii+=4) {//npix
+        let r = frame.data[p + 0];
+        let g = frame.datap + 1];
+        let b = frame.data[p + 2];
+     //   let a = frame.data[p + 3];
+
+if(r<100 && g<100 && b<100){
+//marker=false;
+//ii=W;
+frame.data[p + 0]=150;
+frame.data[p  + 1]=00;
+frame.data[p + 2]=00;
+}
+else{
+ frame.data[p + 0]=0;
+frame.data[p  + 1]=00;
+frame.data[p + 2]=200;
+
+}
+
+      
+      }
+if(marker){
+  markers.ln++;
+  markers.arln.push(i)
+
+}
+    }
+  //  alert("local......"+JSON.stringify(markers));
+    texto.value="local.............\n\n"+JSON.stringify(markers)
+  
+//frame.data=data;
+
+ctx.putImageData(frame,0,0)
+
+aler("local......"+JSON.stringify(markers));
+
+}
+catch(e){alert(e)}
+
+
+
+
+
+
+}
+</script>
+
+
+  </body>
+</html>
+
+
+
     width:100%;
     height:80%;
   //  background:rgba(200,240,255,.4);
