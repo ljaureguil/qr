@@ -22,10 +22,9 @@ html, body {
    
 }
 #img{
-	border-style:solid;
-width:400px;
-height:300px;
-display:none;
+//	border-style:solid;
+//height:300px;
+display:block;
 
 }
 #canvas{
@@ -83,6 +82,8 @@ background:black;
         <button onclick="evalregla()">Procesar Regla Local</button>
         <button onclick="localStorage.setItem('regla',regla.value)">Save regla local</button>
         <button onclick="regla.value=localStorage.getItem('regla','No hay regla')">Load regla local</button>
+        <button onclick="saveWeb()">Save to Web</button>
+               <button onclick="getRule()">Load from Web</button>
         
             <button onclick="savepic()">Save</button>
           
@@ -97,6 +98,7 @@ background:black;
 <textarea id="tx"></textarea>
 </div>
 <script>
+link="https://jsonblob.com/api/1094499123868221440"
   W=400;
   H=300;
   canvas.width=W;canvas.height=H;
@@ -173,22 +175,6 @@ if(marker){
 frame.data=data;
 
 ctx.putImageData(frame,0,0)
-}
-
-function procesar2(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img,0,0,400,300)
-  canvas.style.backgroundSize=rule.bk
-  fdata=ctx.getImageData(0,0,400,300);
-data=fdata.data;//alert(data.length)
-var n=texto.value;
-for(var i=0;i<n.length;i++){
- 
-    data[rule.offset*1+i*rule.skeep*1+rule.place*1]=n.charCodeAt(i);
-}
-fdata.data=data;
-tx.value=data;
-ctx.putImageData(fdata,0,0)
 }
 
 function init(){
@@ -291,13 +277,70 @@ aDownloadLink.click();
          clv.innerHTML=JSON.stringify(rule)
        }
        catch(e){}
-     
+   }
+
+      function GetJ(url, callback) {
+
+            //var url  = "http://localhost:8080/api/v1/users";
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', url + '/1', true)
+            xhr.onload = function() {
+                //         (xhr.responseText)
+                var users = JSON.parse(xhr.responseText);
+                //     var obb=decoding(users.prim);
+
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    callback(users);
+                } else {
+                    console.error(users);
+                }
+            }
+            xhr.send(null);
+        }
+
+         // Update a user
+        function UpdateJ(url, ob, callback) {
+
+            json = JSON.stringify(ob);
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", url + '/12', true);
+            xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            xhr.onload = function() {
+                var users = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    //  alert("Tu Forma ha sido Enviada");
+                    if (callback != undefined) callback(users);
+                } else {
+                    (users);
+                }
+            }
+            xhr.send(json);
+        }
+        function saveWeb(){
+            ob={};
+            ob.name=prompt("Type name","default")
+            ob.rule=regla.value;
+            GetJ(link,function(ar){
+                ar[0]=ob;
+        UpdateJ(link,ar,function(){alert("rule saved")})
+
+})
+        }
+        function getRule(){
+            GetJ(link,function(ob){regla.value=ob[0].rule})
+        }
 
 </script>
 
 
   </body>
 </html>
+
+
+
+
+
+
 
 
 
