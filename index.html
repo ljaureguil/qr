@@ -291,87 +291,8 @@ aDownloadLink.click();
          clv.innerHTML=JSON.stringify(rule)
        }
        catch(e){}
-     }
-{
-  try{
+     
 
- canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
-  W=canvas.width;H=canvas.height
-alert(W+"\n\n"+H)
-  ctx=canvas.getContext("2d",{willReadFrequently:true});
-  ctx.fillStyle ="rgba(0,0,0,0)";
-ctx.fillRect(0,0,canvas.width,canvas.height)
-
-tx.value=data;
-ctx.drawImage(img,0,0,W,H)
-
-
-
-
-
-
- ctx.clearRect(0, 0, W, H);
-  ctx.drawImage(img,0,0,W,H)
-  canvas.style.backgroundSize=rule.bk
-  frame=ctx.getImageData(0,0,W,H);
-data=frame.data;//alert(data.length)
-
-var npix=data.length/4;
-//alert(npix)
-var nlin=npix/W;
-//alert(nlin)
-
- 
-   var markers={nl:0,arln:[],rows:[],w:W,h:H};
-  for (let i = 0; i < H; i++) {
-      var marker=true;
-var p=i*W+ii * 4
-      for (let ii = 0; ii <W ; ii+=4) {//npix
-        let r = frame.data[p + 0];
-        let g = frame.data[p + 1];
-        let b = frame.data[p + 2];
-     //   let a = frame.data[p + 3];
-
-if(r<100 && g<100 && b<100){
-//marker=false;
-//ii=W;
-frame.data[p + 0]=150;
-frame.data[p  + 1]=00;
-frame.data[p + 2]=00;
-}
-else{
- frame.data[p + 0]=0;
-frame.data[p  + 1]=00;
-frame.data[p + 2]=200;
-
-}
-
-      
-      }
-if(marker){
-  markers.ln++;
-  markers.arln.push(i)
-
-}
-    }
-  //  alert("local......"+JSON.stringify(markers));
-    texto.value="local.............\n\n"+JSON.stringify(markers)
-  
-//frame.data=data;
-
-ctx.putImageData(frame,0,0)
-
-aler("local......"+JSON.stringify(markers));
-
-}
-catch(e){alert(e)}
-
-
-
-
-
-
-}
 </script>
 
 
