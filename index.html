@@ -461,12 +461,14 @@ ob.name=chn;
 alert(JSON.stringify(ob));
 }
 function getPix(w,x,y,data){
-    if(data);
-    var p=4*(x+y*w)
-    return {pos:p,pixel:{r:data[p],g:data[p+1],b:data[p+2],a:data[p+3]}}
+   var ob={};
+ 
+   var p=4*(x+y*w);
+     ob.pos=p;
+    if(data!=undefined) ob.pixel={r:data[p+0],g:data[p+1],b:data[p+2],a:data[p+3]}
+    return ob
 
 }
-
 
     </script>
 
