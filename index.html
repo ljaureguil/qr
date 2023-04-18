@@ -54,11 +54,32 @@
             width: 98%;
             height: 30%;
         }
+        #rows{
+            position:relative;
+            left:25%;
+
+            width:50%;
+            padding:10px;
+            margin:10px;
+        z-index: 1;
+         //   overflow: auto;
+  
+        }
+        #cedit{
+         display: none;
+            background:green;
+            position: absolute;
+            top: 30%;
+            left:55%;
+            z-index: 2;
+        }
+  
     </style>
     <div id="todo">
         <img id="img" src- "https://media4.s-nbcnews.com/j/msnbc/Components/Photos/050405/050405_shuttle_vmed.fit-760w.jpg">
-        <canvas id="canvas" width=400 height=300></canvas>
-        <span id="rows"></span>
+        <canvas id="canvas" style="display:none;" width=400 height=300></canvas>
+        <img id="cedit" onclick="showDlg(event)">
+        <span id="rows""></span>
 
 
         <div id="entradas">
@@ -95,6 +116,7 @@
         <textarea id="tx"></textarea>
     </div>
     <script>
+        var _clicke="";//,arch=[]
         link = "https://jsonblob.com/api/1094499123868221440";
         arrayr = [];
         getRules()
@@ -407,6 +429,15 @@
             }
 
         }
+
+        function showDlg(e){
+    
+          eval(_clicke)
+     /*    
+            const x = e.offsetX,y = e.offsetY;alert(x+"\n\n"+y+"\n\n rx: "+x/cedit.width+"\n ry: "+y/cedit.height)
+        }
+   */
+    }
     </script>
 
 
