@@ -52,7 +52,7 @@
         }
         #regla {
             width: 98%;
-            height: 30%;
+            height: 70%;
         }
         #rows{
             position:relative;
@@ -72,13 +72,25 @@
             top: 30%;
             left:55%;
             z-index: 2;
+            border-style: solid;
+            overflow: auto;
+        }
+        #imgedit{
+        border-style: solid;
         }
   
     </style>
     <div id="todo">
         <img id="img" src- "https://media4.s-nbcnews.com/j/msnbc/Components/Photos/050405/050405_shuttle_vmed.fit-760w.jpg">
         <canvas id="canvas" style="display:none;" width=400 height=300></canvas>
-        <img id="cedit" onclick="showDlg(event)">
+        <div id="cedit">
+       
+        <textarea id="infor"></textarea>
+         <img id="imgedit" onclick="showDlg(event)">
+        <button onclick="cedit.style.display='none'">Close</button>
+        <button onclick="">Set to Spot</button>
+        <button onclick="">Set as Blank</button>
+    </div>
         <span id="rows""></span>
 
 
@@ -116,7 +128,7 @@
         <textarea id="tx"></textarea>
     </div>
     <script>
-        var _clicke="";//,arch=[]
+        var _clicke="";alfabeto=[];//,arch=[]
         link = "https://jsonblob.com/api/1094499123868221440";
         arrayr = [];
         getRules()
@@ -437,7 +449,25 @@
             const x = e.offsetX,y = e.offsetY;alert(x+"\n\n"+y+"\n\n rx: "+x/cedit.width+"\n ry: "+y/cedit.height)
         }
    */
+ // setCharData({})
     }
+    function setCharData(ob){
+//alert(JSON.stringify(ob));
+var chn=prompt("Type Character name","");
+if(chn==="") return;
+
+ob.name=chn;
+
+alert(JSON.stringify(ob));
+}
+function getPix(w,x,y,data){
+    if(data);
+    var p=4*(x+y*w)
+    return {pos:p,pixel:{r:data[p],g:data[p+1],b:data[p+2],a:data[p+3]}}
+
+}
+
+
     </script>
 
 
