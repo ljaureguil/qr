@@ -469,6 +469,47 @@ function getPix(w,x,y,data){
     return ob
 
 }
+function trimH(data,w){
+    alert(data);
+  
+   var y=data.length/(w*4); 
+
+    if(y.toString().indexOf(".")>-1) {alert("Y doesn't match");return}
+   var m=false,x1=0,x2=0,y1=undefined,y2=undefined;
+      alert(w+"  ee  "+y); m=true;
+     for(var yy=0;yy<y;yy++){
+        m=true;
+        for(var xx=0;xx<w;xx++){
+                         
+            var p=4*(xx+yy*w);
+             let r = data[p + 0];
+            let g = data[p + 1];
+            let b = data[p + 2];
+
+            if (r < 200 && g < 200 && b < 200) {
+                if(y1===undefined){ y1=yy;m=false;xx=w}
+ 
+              } 
+         }
+         if(m && y1!=undefined){ y2=yy;yy=y}
+  
+    }
+    
+    
+    alert(y2);alert(y1);
+    alert(y2*y1)
+    alert(y2-y1)
+    var ndata=new ImageData(w,y2-y1);
+    var p=4*(w+y1*w)
+    for(var i=0;i<ndata.length;i++){
+        ndata[i]=data[p]
+    }
+    
+
+
+    return data;
+}
+
 
     </script>
 
